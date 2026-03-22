@@ -75,10 +75,42 @@ reader.readAsArrayBuffer(file)
 
 function processar(dados){
 
+let total = dados.length
+let processados = 0
+
+function atualizarBarra(){
+
+let porcentagem = Math.floor((processados/total)*100)
+
+document.getElementById("progressFill").style.width = porcentagem + "%"
+document.getElementById("progressText").innerText = porcentagem + "%"
+
+}
+
+// processamento em loop
+dados.forEach((d,i)=>{
+
+setTimeout(()=>{
+
+processados++
+
+atualizarBarra()
+
+if(processados === total){
+
 montarDashboard(dados)
 montarTabela(dados)
 montarMapa(dados)
 montarGaleria(dados)
+
+// esconder loader
+document.getElementById("loader").style.display="none"
+
+}
+
+}, i*2)
+
+})
 
 }
 

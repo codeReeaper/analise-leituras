@@ -29,43 +29,65 @@ iniciarMapa()
 // UPLOAD DO EXCEL
 // ===============================
 
-document.getElementById("excelFile").addEventListener("change",lerExcel)
-
+document.getElementById("excelFile").addEventListener("change", lerExcel);
 
 function lerExcel(e){
 
-document.getElementById("loader").style.display="flex"
+  // Mostra o loader
+  document.getElementById("loader").style.display = "flex";
 
-const file=e.target.files[0]
+  const file = e.target.files[0];
 
-const reader=new FileReader()
+  if(!file){
+    alert("Nenhum arquivo selecionado.");
+    document.getElementById("loader").style.display = "none";
+    return;
+  }
 
-reader.onload=function(event){
+const reader = new FileReader();
 
-const data=new Uint8Array(event.target.result)
+reader.onload = function(event){
 
-const workbook=XLSX.read(data,{type:"array"})
+    try{
 
-const sheet=workbook.Sheets[workbook.SheetNames[0]]
+    const data = new Uint8Array(event.target.result);
 
-/*
-IMPORTANTE
+    const workbook = XLSX.read(data, {type:"array"});
 
-range:3 pula as linhas de título do relatório
-*/
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-const json=XLSX.utils.sheet_to_json(sheet,{range:3})
+      // Pula as 3 linhas de título do relatório
+    const json = XLSX.utils.sheet_to_json(sheet, {range:3});
 
-dadosGlobais=json
+console.log("Dados carregados:", json);
+if(!json || json.length === 0){
+        alert("O Excel foi carregado mas não possui dados válidos.");
+}
 
-processar(json)
+    dadosGlobais = json;
 
-document.getElementById("loader").style.display="none"
+      // Executa o processamento
+    processar(json);
+
+    }catch(err){
+
+    console.error("Erro ao ler o Excel:", err);
+    alert("Erro ao processar o arquivo Excel.");
+
+    }finally{
+
+      // Sempre esconder o loader
+    document.getElementById("loader").style.display = "none";
 
 }
 
-reader.readAsArrayBuffer(file)
+};
 
+reader.onerror = function(){
+    alert("Erro ao ler o arquivo.");
+    document.getElementById("loader").style.display = "none";
+};
+reader.readAsArrayBuffer(file);
 }
 
 

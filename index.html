@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Painel de Leituras</title>
+        <link rel="stylesheet" href="css/style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>Painel Analítico de Leituras</h1>
+        </header>
+
+        <section class="upload">
+            <input type="file" id="excelFile">
+        </section>
+
+        <section class="dashboard">
+            <div class="card">
+                <h3>Total Leituras</h3>
+                <p id="totalLeituras">0</p>
+            </div>
+            <div class="card verde">
+                <h3>Sem Ocorrência</h3>
+                <p id="semOcorrencia">0</p>
+            </div>
+            <div class="card vermelho">
+                <h3>Ocorrência sem Foto</h3>
+                <p id="semFoto">0</p>
+            </div>
+            <div class="card laranja">
+                <h3>Ocorrência com Foto</h3>
+                <p id="comFoto">0</p>
+            </div>
+        </section>
+
+        <section class="grafico">
+            <canvas id="graficoOcorrencias"></canvas>
+        </section>
+
+        <section class="filtros">
+            <input type="text" id="filtroMatricula" placeholder="Filtrar matrícula">
+            <select id="filtroOcorrencia">
+                <option value="">Todas ocorrências</option>
+            </select>
+        </section>
+
+        <section>
+            <table id="tabela">
+                <thead>
+                    <tr>
+                        <th>Matrícula</th>
+                        <th>Leitura</th>
+                        <th>Ocorrência</th>
+                        <th>Foto</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <div id="modal">
+            <img id="fotoModal">
+        </div>
+        <script src="js/script.js"></script>
+    </body>
+</html>

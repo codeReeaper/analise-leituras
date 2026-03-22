@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Painel de Leituras</title>
+        <title>Painel de Auditoria de Leituras</title>
         <link rel="stylesheet" href="css/style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
+        <!-- LOADER -->
+        <div id="loader">
+            <img src="assets/logo.png" class="logoLoader">
+            <p>Analisando relatório...</p>
+        </div>
+
         <header>
-            <h1>Painel Analítico de Leituras</h1>
+            <h1>Painel de Auditoria de Leituras</h1>
         </header>
-
+        
         <section class="upload">
-            <input type="file" id="excelFile">
+            <div id="dropZone">
+                <p>Arraste o Excel aqui ou clique para enviar</p>
+                <input type="file" id="excelFile">
+            </div>
         </section>
-
+        
+        <!-- DASHBOARD -->
+        
         <section class="dashboard">
             <div class="card">
                 <h3>Total Leituras</h3>
@@ -37,9 +47,13 @@
             </div>
         </section>
 
+        <!-- GRÁFICO -->
+
         <section class="grafico">
             <canvas id="graficoOcorrencias"></canvas>
         </section>
+
+        <!-- FILTROS -->
 
         <section class="filtros">
             <input type="text" id="filtroMatricula" placeholder="Filtrar matrícula">
@@ -47,6 +61,8 @@
                 <option value="">Todas ocorrências</option>
             </select>
         </section>
+
+        <!-- TABELA -->
 
         <section>
             <table id="tabela">
@@ -62,6 +78,13 @@
             </table>
         </section>
 
+        <!-- GALERIA DE FOTOS -->
+
+        <section class="galeria">
+            <h2>Fotos de Ocorrências</h2>
+            <div id="galeriaFotos"></div>
+        </section>
+        
         <div id="modal">
             <img id="fotoModal">
         </div>

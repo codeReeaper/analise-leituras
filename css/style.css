@@ -1,27 +1,59 @@
 body{
     background:#0D0D0D;
-    color:white;
+    color:#F2F2F2;
     font-family:Arial;
     padding:30px;
-}
-
-header{
-    margin-bottom:30px;
 }
 
 h1{
     color:#C6FF00;
 }
 
+/* LOADER */
+#loader{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#0D0D0D;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+}
+
+.logoLoader{
+    width:120px;
+    animation:girar 2s linear infinite;
+}
+
+@keyframes girar{
+    0%{transform:rotate(0deg)}
+    100%{transform:rotate(360deg)}
+}
+
 .upload{
-    margin-bottom:20px;
+    margin:20px 0;
+}
+
+#dropZone{
+    border:2px dashed #444;
+    padding:40px;
+    text-align:center;
+    cursor:pointer;
+}
+
+#dropZone:hover{
+    border-color:#C6FF00;
 }
 
 .dashboard{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:20px;
-    margin-bottom:30px;
+    margin:30px 0;
 }
 
 .card{
@@ -32,7 +64,7 @@ h1{
 }
 
 .card p{
-    font-size:30px;
+    font-size:28px;
     font-weight:bold;
 }
 
@@ -50,11 +82,7 @@ h1{
 
 .grafico{
     max-width:600px;
-    margin-bottom:30px;
-}
-
-.filtros{
-    margin-bottom:20px;
+    margin-bottom:40px;
 }
 
 input,select{
@@ -93,12 +121,31 @@ tr.laranja{
 }
 
 button{
-    padding:6px 10px;
     background:#C6FF00;
     border:none;
+    padding:6px 10px;
     cursor:pointer;
 }
 
+/* GALERIA */
+.galeria{
+    margin-top:50px;
+}
+
+#galeriaFotos{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,150px);
+    gap:10px;
+}
+
+#galeriaFotos img{
+    width:150px;
+    height:150px;
+    object-fit:cover;
+    cursor:pointer;
+}
+
+/* MODAL */
 #modal{
     display:none;
     position:fixed;
@@ -108,7 +155,7 @@ button{
     height:100%;
     background:rgba(0,0,0,0.9);
     align-items:center;
-justify-content:center;
+    justify-content:center;
 }
 
 #modal img{

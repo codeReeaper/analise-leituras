@@ -1,93 +1,164 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Painel de Auditoria de Leituras</title>
-        <link rel="stylesheet" href="css/style.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </head>
-    <body>
-        <!-- LOADER -->
-        <div id="loader">
-            <img src="assets/logo.png" class="logoLoader">
-            <p>Analisando relatório...</p>
-        </div>
 
-        <header>
-            <h1>Painel de Auditoria de Leituras</h1>
-        </header>
-        
-        <section class="upload">
-            <div id="dropZone">
-                <p>Arraste o Excel aqui ou clique para enviar</p>
-                <input type="file" id="excelFile">
-            </div>
-        </section>
-        
-        <!-- DASHBOARD -->
-        
-        <section class="dashboard">
-            <div class="card">
-                <h3>Total Leituras</h3>
-                <p id="totalLeituras">0</p>
-            </div>
-            <div class="card verde">
-                <h3>Sem Ocorrência</h3>
-                <p id="semOcorrencia">0</p>
-            </div>
-            <div class="card vermelho">
-                <h3>Ocorrência sem Foto</h3>
-                <p id="semFoto">0</p>
-            </div>
-            <div class="card laranja">
-                <h3>Ocorrência com Foto</h3>
-                <p id="comFoto">0</p>
-            </div>
-        </section>
+<head>
 
-        <!-- GRÁFICO -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <section class="grafico">
-            <canvas id="graficoOcorrencias"></canvas>
-        </section>
+<title>Painel de Auditoria de Leituras</title>
 
-        <!-- FILTROS -->
+<!-- Fonte mais pesada estilo brutal -->
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
-        <section class="filtros">
-            <input type="text" id="filtroMatricula" placeholder="Filtrar matrícula">
-            <select id="filtroOcorrencia">
-                <option value="">Todas ocorrências</option>
-            </select>
-        </section>
+<link rel="stylesheet" href="css/style.css">
 
-        <!-- TABELA -->
+<!-- Biblioteca para ler Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-        <section>
-            <table id="tabela">
-                <thead>
-                    <tr>
-                        <th>Matrícula</th>
-                        <th>Leitura</th>
-                        <th>Ocorrência</th>
-                        <th>Foto</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </section>
+<!-- Biblioteca para gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <!-- GALERIA DE FOTOS -->
+<!-- Biblioteca de mapa -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-        <section class="galeria">
-            <h2>Fotos de Ocorrências</h2>
-            <div id="galeriaFotos"></div>
-        </section>
-        
-        <div id="modal">
-            <img id="fotoModal">
-        </div>
-        <script src="js/script.js"></script>
-    </body>
+</head>
+
+<body>
+
+<!-- LOADER -->
+<!-- Começa escondido -->
+<div id="loader">
+
+<img src="assets/logo.png" class="logoLoader">
+
+<p class="loaderText">PROCESSANDO RELATÓRIO...</p>
+
+</div>
+
+<header>
+
+<h1>Painel de Auditoria de Leituras</h1>
+
+</header>
+
+<!-- ÁREA DE UPLOAD -->
+
+<section class="upload">
+
+<div id="dropZone">
+
+<p>Arraste o Excel ou clique para enviar</p>
+
+<input type="file" id="excelFile">
+
+</div>
+
+</section>
+
+<!-- DASHBOARD -->
+
+<section class="dashboard">
+
+<div class="card">
+<h3>Total</h3>
+<p id="totalLeituras">0</p>
+</div>
+
+<div class="card verde">
+<h3>Sem Ocorrência</h3>
+<p id="semOcorrencia">0</p>
+</div>
+
+<div class="card vermelho">
+<h3>Sem Foto</h3>
+<p id="semFoto">0</p>
+</div>
+
+<div class="card laranja">
+<h3>Com Foto</h3>
+<p id="comFoto">0</p>
+</div>
+
+</section>
+
+<!-- GRÁFICO -->
+
+<section class="grafico">
+
+<canvas id="graficoOcorrencias"></canvas>
+
+</section>
+
+<!-- FILTROS -->
+
+<section class="filtros">
+
+<input type="text" id="filtroMatricula" placeholder="Filtrar matrícula">
+
+<select id="filtroOcorrencia">
+
+<option value="">Todas ocorrências</option>
+
+</select>
+
+</section>
+
+<!-- TABELA -->
+
+<section>
+
+<table id="tabela">
+
+<thead>
+
+<tr>
+
+<th>Matrícula</th>
+<th>Leitura</th>
+<th>Ocorrência</th>
+<th>Foto</th>
+
+</tr>
+
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</section>
+
+<!-- MAPA DAS LEITURAS -->
+
+<section>
+
+<h2>Mapa das Leituras</h2>
+
+<div id="mapa"></div>
+
+</section>
+
+<!-- GALERIA -->
+
+<section class="galeria">
+
+<h2>Fotos de Ocorrência</h2>
+
+<div id="galeriaFotos"></div>
+
+</section>
+
+<!-- MODAL PARA FOTO GRANDE -->
+
+<div id="modal">
+
+<img id="fotoModal">
+
+</div>
+
+<script src="js/script.js"></script>
+
+</body>
 </html>

@@ -1,5 +1,3 @@
-/* Fundo geral */
-
 body{
 
 background:#0D0D0D;
@@ -9,12 +7,10 @@ padding:30px;
 
 }
 
-/* Título com fonte brutal */
-
 h1{
 
 font-family:'Anton',sans-serif;
-letter-spacing:2px;
+letter-spacing:3px;
 color:#C6FF00;
 
 }
@@ -32,7 +28,6 @@ height:100%;
 
 background:#0D0D0D;
 
-/* começa escondido */
 display:none;
 
 flex-direction:column;
@@ -45,25 +40,43 @@ z-index:9999;
 
 .logoLoader{
 
-width:140px;
+width:150px;
 
-/* animação girando */
 animation:girar 2s linear infinite;
 
 }
-
-/* texto do loader */
 
 .loaderText{
 
 font-family:'Anton',sans-serif;
 font-size:28px;
 margin-top:20px;
-letter-spacing:3px;
 
 }
 
-/* animação */
+.progressBar{
+
+width:300px;
+height:20px;
+background:#222;
+margin-top:20px;
+
+}
+
+#progressFill{
+
+height:100%;
+width:0%;
+background:#C6FF00;
+
+}
+
+#progressText{
+
+margin-top:10px;
+font-weight:bold;
+
+}
 
 @keyframes girar{
 
@@ -71,25 +84,6 @@ letter-spacing:3px;
 100%{transform:rotate(360deg)}
 
 }
-
-/* Upload */
-
-#dropZone{
-
-border:2px dashed #444;
-padding:40px;
-text-align:center;
-cursor:pointer;
-
-}
-
-#dropZone:hover{
-
-border-color:#C6FF00;
-
-}
-
-/* Dashboard */
 
 .dashboard{
 
@@ -105,24 +99,12 @@ margin:30px 0;
 background:#111;
 padding:20px;
 text-align:center;
-border-radius:8px;
 
 }
-
-.card p{
-
-font-size:28px;
-font-weight:bold;
-
-}
-
-/* cores */
 
 .verde{background:#134e13;}
 .vermelho{background:#7f1d1d;}
 .laranja{background:#9a5a00;}
-
-/* tabela */
 
 table{
 
@@ -145,16 +127,12 @@ border-bottom:1px solid #222;
 
 }
 
-/* mapa */
-
 #mapa{
 
 height:400px;
 margin-top:20px;
 
 }
-
-/* galeria */
 
 #galeriaFotos{
 
@@ -173,18 +151,14 @@ cursor:pointer;
 
 }
 
-/* modal */
-
 #modal{
 
 display:none;
 position:fixed;
 top:0;
 left:0;
-
 width:100%;
 height:100%;
-
 background:rgba(0,0,0,0.9);
 
 align-items:center;

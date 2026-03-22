@@ -1,46 +1,39 @@
-// ================================
+// ===============================
 // VARIÁVEIS GLOBAIS
-// ================================
+// ===============================
 
-// guarda dados do excel
 let dadosGlobais=[]
 
-// mapa
 let mapa
-
-// marcadores
 let marcadores=[]
 
-// ================================
+
+// ===============================
 // INICIAR MAPA
-// ================================
+// ===============================
 
 function iniciarMapa(){
 
 mapa = L.map('mapa').setView([-22.9,-43.2],10)
 
-// camada do mapa (OpenStreetMap)
-
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-
 maxZoom:19
-
 }).addTo(mapa)
 
 }
 
-// inicia mapa ao abrir site
 iniciarMapa()
 
-// ================================
-// UPLOAD EXCEL
-// ================================
+
+// ===============================
+// UPLOAD DO EXCEL
+// ===============================
 
 document.getElementById("excelFile").addEventListener("change",lerExcel)
 
+
 function lerExcel(e){
 
-// mostra loader
 document.getElementById("loader").style.display="flex"
 
 const file=e.target.files[0]
@@ -49,22 +42,24 @@ const reader=new FileReader()
 
 reader.onload=function(event){
 
-// converte arquivo
 const data=new Uint8Array(event.target.result)
 
 const workbook=XLSX.read(data,{type:"array"})
 
-// pega primeira planilha
 const sheet=workbook.Sheets[workbook.SheetNames[0]]
 
-// transforma em JSON
-const json=XLSX.utils.sheet_to_json(sheet)
+/*
+IMPORTANTE
+
+range:3 pula as linhas de título do relatório
+*/
+
+const json=XLSX.utils.sheet_to_json(sheet,{range:3})
 
 dadosGlobais=json
 
 processar(json)
 
-// esconde loader
 document.getElementById("loader").style.display="none"
 
 }
@@ -73,92 +68,24 @@ reader.readAsArrayBuffer(file)
 
 }
 
-// ================================
+
+// ===============================
 // PROCESSAR DADOS
-// ================================
+// ===============================
 
 function processar(dados){
 
-montarTabela(dados)
-
 montarDashboard(dados)
-
-popularFiltro(dados)
-
+montarTabela(dados)
+montarMapa(dados)
 montarGaleria(dados)
 
-montarMapa(dados)
-
 }
 
-// ================================
-// TABELA
-// ================================
 
-function montarTabela(dados){
-
-const tbody=document.querySelector("#tabela tbody")
-
-tbody.innerHTML=""
-
-dados.forEach(d=>{
-
-let ocorr=d.OCORREN || ""
-
-let foto=d["TEM_FOTO?"] || ""
-
-let link=d.LINK_FOT || ""
-
-let classe=""
-
-if(!ocorr){
-
-classe="verde"
-
-}
-
-else if(ocorr && foto==="NÃO"){
-
-classe="vermelho"
-
-}
-
-else{
-
-classe="laranja"
-
-}
-
-let botao=""
-
-if(foto==="SIM"){
-
-let url=extrairURL(link)
-
-botao=`<button onclick="abrirFoto('${url}')">Foto</button>`
-
-}
-
-tbody.innerHTML+=`
-
-<tr class="${classe}">
-
-<td>${d.MATRICUL}</td>
-<td>${d.LEITURA}</td>
-<td>${ocorr}</td>
-<td>${botao}</td>
-
-</tr>
-
-`
-
-})
-
-}
-
-// ================================
+// ===============================
 // DASHBOARD
-// ================================
+// ===============================
 
 function montarDashboard(dados){
 
@@ -170,7 +97,7 @@ let comFoto=0
 
 dados.forEach(d=>{
 
-if(!d.OCORREN){
+if(!d.OCORRENCIA){
 
 semOc++
 
@@ -197,15 +124,86 @@ document.getElementById("comFoto").innerText=comFoto
 
 }
 
-// ================================
+
+// ===============================
+// PEGAR FOTO
+// ===============================
+
+function pegarFoto(d){
+
+return d.LINK_FOTO_1 ||
+d.LINK_FOTO_2 ||
+d.LINK_FOTO_3 ||
+d.LINK_FOTO_4 ||
+d.LINK_FOTO_5 ||
+""
+
+}
+
+
+// ===============================
+// EXTRAIR URL
+// ===============================
+
+function extrairURL(texto){
+
+if(!texto) return ""
+
+let match=texto.toString().match(/https?:\/\/[^"]+/)
+
+return match?match[0]:""
+
+}
+
+
+// ===============================
+// TABELA
+// ===============================
+
+function montarTabela(dados){
+
+const tbody=document.querySelector("#tabela tbody")
+
+tbody.innerHTML=""
+
+dados.forEach((d,i)=>{
+
+let url=extrairURL(pegarFoto(d))
+
+let botao=""
+
+if(url){
+
+botao=`<button onclick="abrirFoto('${url}')">Foto</button>`
+
+}
+
+tbody.innerHTML+=`
+
+<tr>
+
+<td>${d.MATRICULA}</td>
+<td>${d.LEITURA}</td>
+<td>${d.OCORRENCIA||""}</td>
+<td>${d.DSC_COLABORADOR||""}</td>
+<td>${botao}</td>
+
+</tr>
+
+`
+
+})
+
+}
+
+
+// ===============================
 // MAPA
-// ================================
+// ===============================
 
 function montarMapa(dados){
 
-// remove marcadores antigos
 marcadores.forEach(m=>mapa.removeLayer(m))
-
 marcadores=[]
 
 dados.forEach(d=>{
@@ -217,11 +215,7 @@ if(lat && lon){
 
 let marker=L.marker([lat,lon]).addTo(mapa)
 
-marker.bindPopup(
-
-`Matricula: ${d.MATRICUL}`
-
-)
+marker.bindPopup(`Matricula: ${d.MATRICULA}`)
 
 marcadores.push(marker)
 
@@ -231,9 +225,10 @@ marcadores.push(marker)
 
 }
 
-// ================================
+
+// ===============================
 // GALERIA
-// ================================
+// ===============================
 
 function montarGaleria(dados){
 
@@ -243,9 +238,9 @@ galeria.innerHTML=""
 
 dados.forEach(d=>{
 
-if(d["TEM_FOTO?"]==="SIM"){
+let url=extrairURL(pegarFoto(d))
 
-let url=extrairURL(d.LINK_FOT)
+if(url){
 
 let img=document.createElement("img")
 
@@ -261,23 +256,10 @@ galeria.appendChild(img)
 
 }
 
-// ================================
-// EXTRAIR URL DA FOTO
-// ================================
 
-function extrairURL(texto){
-
-if(!texto) return ""
-
-let r=texto.match(/https.*?jpg/)
-
-return r?r[0]:""
-
-}
-
-// ================================
-// ABRIR FOTO
-// ================================
+// ===============================
+// MODAL FOTO
+// ===============================
 
 function abrirFoto(url){
 

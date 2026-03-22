@@ -8,18 +8,18 @@
 
 <title>Painel de Auditoria de Leituras</title>
 
-<!-- Fonte mais pesada estilo brutal -->
+<!-- fonte brutal -->
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
 
-<!-- Biblioteca para ler Excel -->
+<!-- biblioteca excel -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-<!-- Biblioteca para gráficos -->
+<!-- gráfico -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Biblioteca de mapa -->
+<!-- mapa -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
@@ -28,12 +28,20 @@
 <body>
 
 <!-- LOADER -->
-<!-- Começa escondido -->
+
 <div id="loader">
 
 <img src="assets/logo.png" class="logoLoader">
 
-<p class="loaderText">PROCESSANDO RELATÓRIO...</p>
+<p class="loaderText">PROCESSANDO RELATÓRIO</p>
+
+<div class="progressBar">
+
+<div id="progressFill"></div>
+
+</div>
+
+<p id="progressText">0%</p>
 
 </div>
 
@@ -43,21 +51,11 @@
 
 </header>
 
-<!-- ÁREA DE UPLOAD -->
-
 <section class="upload">
-
-<div id="dropZone">
-
-<p>Arraste o Excel ou clique para enviar</p>
 
 <input type="file" id="excelFile">
 
-</div>
-
 </section>
-
-<!-- DASHBOARD -->
 
 <section class="dashboard">
 
@@ -83,29 +81,13 @@
 
 </section>
 
-<!-- GRÁFICO -->
+<section>
 
-<section class="grafico">
+<h2>Mapa das Leituras</h2>
 
-<canvas id="graficoOcorrencias"></canvas>
-
-</section>
-
-<!-- FILTROS -->
-
-<section class="filtros">
-
-<input type="text" id="filtroMatricula" placeholder="Filtrar matrícula">
-
-<select id="filtroOcorrencia">
-
-<option value="">Todas ocorrências</option>
-
-</select>
+<div id="mapa"></div>
 
 </section>
-
-<!-- TABELA -->
 
 <section>
 
@@ -114,12 +96,11 @@
 <thead>
 
 <tr>
-
 <th>Matrícula</th>
 <th>Leitura</th>
 <th>Ocorrência</th>
+<th>Colaborador</th>
 <th>Foto</th>
-
 </tr>
 
 </thead>
@@ -130,27 +111,13 @@
 
 </section>
 
-<!-- MAPA DAS LEITURAS -->
-
 <section>
-
-<h2>Mapa das Leituras</h2>
-
-<div id="mapa"></div>
-
-</section>
-
-<!-- GALERIA -->
-
-<section class="galeria">
 
 <h2>Fotos de Ocorrência</h2>
 
 <div id="galeriaFotos"></div>
 
 </section>
-
-<!-- MODAL PARA FOTO GRANDE -->
 
 <div id="modal">
 

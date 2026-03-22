@@ -1,3 +1,7 @@
+console.log("Script carregado")
+console.log("XLSX:", XLSX)
+
+
 // ===============================
 // VARIÁVEIS GLOBAIS
 // ===============================
@@ -32,6 +36,10 @@ iniciarMapa()
 document.getElementById("excelFile").addEventListener("change", lerExcel);
 
 function lerExcel(e){
+
+console.log("Arquivo selecionado")
+
+document.getElementById("loader").style.display="flex"
 
   // Mostra o loader
   document.getElementById("loader").style.display = "flex";
